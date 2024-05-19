@@ -1,0 +1,6 @@
+query LandingQuery {
+    landing {
+        title
+        content
+    }
+}

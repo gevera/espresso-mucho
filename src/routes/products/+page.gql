@@ -1,0 +1,6 @@
+query Products {
+    product_items {
+        id
+        name
+    }
+}

@@ -1,0 +1,205 @@
+"""ISO8601 Date values"""
+scalar Date
+
+enum EventEnum {
+  create
+  delete
+  update
+}
+
+"""A Float or a String"""
+scalar GraphQLStringOrFloat
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type Query {
+  landing(version: String): landing
+  landing_by_version(version: String!): version_landing
+  product_items(filter: product_items_filter, limit: Int, offset: Int, page: Int, search: String, sort: [String]): [product_items!]!
+  product_items_aggregated(filter: product_items_filter, groupBy: [String], limit: Int, offset: Int, page: Int, search: String, sort: [String]): [product_items_aggregated!]!
+  product_items_by_id(id: ID!, version: String): product_items
+  product_items_by_version(id: ID!, version: String!): version_product_items
+}
+
+type Subscription {
+  landing_mutated(event: EventEnum): landing_mutated
+  product_items_mutated(event: EventEnum): product_items_mutated
+}
+
+input date_filter_operators {
+  _between: [GraphQLStringOrFloat]
+  _eq: String
+  _gt: String
+  _gte: String
+  _in: [String]
+  _lt: String
+  _lte: String
+  _nbetween: [GraphQLStringOrFloat]
+  _neq: String
+  _nin: [String]
+  _nnull: Boolean
+  _null: Boolean
+}
+
+input datetime_function_filter_operators {
+  day: number_filter_operators
+  hour: number_filter_operators
+  minute: number_filter_operators
+  month: number_filter_operators
+  second: number_filter_operators
+  week: number_filter_operators
+  weekday: number_filter_operators
+  year: number_filter_operators
+}
+
+type datetime_functions {
+  day: Int
+  hour: Int
+  minute: Int
+  month: Int
+  second: Int
+  week: Int
+  weekday: Int
+  year: Int
+}
+
+type landing {
+  content: String
+  date_updated: Date
+  date_updated_func: datetime_functions
+  id: ID!
+  title: String
+  user_updated: String
+}
+
+type landing_mutated {
+  data: landing
+  event: EventEnum
+  key: ID!
+}
+
+input number_filter_operators {
+  _between: [GraphQLStringOrFloat]
+  _eq: GraphQLStringOrFloat
+  _gt: GraphQLStringOrFloat
+  _gte: GraphQLStringOrFloat
+  _in: [GraphQLStringOrFloat]
+  _lt: GraphQLStringOrFloat
+  _lte: GraphQLStringOrFloat
+  _nbetween: [GraphQLStringOrFloat]
+  _neq: GraphQLStringOrFloat
+  _nin: [GraphQLStringOrFloat]
+  _nnull: Boolean
+  _null: Boolean
+}
+
+type product_items {
+  date_created: Date
+  date_created_func: datetime_functions
+  date_updated: Date
+  date_updated_func: datetime_functions
+  id: ID!
+  name: String
+  sort: Int
+  status: String
+  user_created: String
+  user_updated: String
+}
+
+type product_items_aggregated {
+  avg: product_items_aggregated_fields
+  avgDistinct: product_items_aggregated_fields
+  count: product_items_aggregated_count
+  countAll: Int
+  countDistinct: product_items_aggregated_count
+  group: JSON
+  max: product_items_aggregated_fields
+  min: product_items_aggregated_fields
+  sum: product_items_aggregated_fields
+  sumDistinct: product_items_aggregated_fields
+}
+
+type product_items_aggregated_count {
+  date_created: Int
+  date_updated: Int
+  id: Int
+  name: Int
+  sort: Int
+  status: Int
+  user_created: Int
+  user_updated: Int
+}
+
+type product_items_aggregated_fields {
+  sort: Float
+}
+
+input product_items_filter {
+  _and: [product_items_filter]
+  _or: [product_items_filter]
+  date_created: date_filter_operators
+  date_created_func: datetime_function_filter_operators
+  date_updated: date_filter_operators
+  date_updated_func: datetime_function_filter_operators
+  id: string_filter_operators
+  name: string_filter_operators
+  sort: number_filter_operators
+  status: string_filter_operators
+  user_created: string_filter_operators
+  user_updated: string_filter_operators
+}
+
+type product_items_mutated {
+  data: product_items
+  event: EventEnum
+  key: ID!
+}
+
+input string_filter_operators {
+  _contains: String
+  _empty: Boolean
+  _ends_with: String
+  _eq: String
+  _icontains: String
+  _iends_with: String
+  _in: [String]
+  _istarts_with: String
+  _ncontains: String
+  _nempty: Boolean
+  _nends_with: String
+  _neq: String
+  _niends_with: String
+  _nin: [String]
+  _nistarts_with: String
+  _nnull: Boolean
+  _nstarts_with: String
+  _null: Boolean
+  _starts_with: String
+}
+
+""""""
+type version_landing {
+  content: String
+  date_updated: Date
+  date_updated_func: datetime_functions
+  id: ID!
+  title: String
+  user_updated: String
+}
+
+""""""
+type version_product_items {
+  date_created: Date
+  date_created_func: datetime_functions
+  date_updated: Date
+  date_updated_func: datetime_functions
+  id: ID!
+  name: String
+  sort: Int
+  status: String
+  user_created: String
+  user_updated: String
+}
